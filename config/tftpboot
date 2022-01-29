@@ -1,0 +1,15 @@
+     tftp server for PXE booting
+
+The PXE boot files must be placed in the directory /var/lib/tftpboot/pxelinux.cfg/. To use different PXE boot files for every single MAC address, name the files 01-aa-bb-cc-dd-ee-ff, where aa-bb-cc-dd-ee-ff is the MAC address in lower case, using hyphens instead of colons.
+
+An example of PXE boot file for a the MAC address 52:54:00:00:32:09 is:
+
+[root@utility ~]# cat /var/lib/tftpboot/pxelinux.cfg/01-52-54-00-00-32-09
+default menu.c32
+prompt 0
+timeout 0
+menu title **** OpenShift 4 BOOTSTRAP PXE Boot Menu ****
+
+label Install RHCOS 4.6.1 Bootstrap Node
+ kernel http://192.168.50.254:8080/openshift4/images/rhcos-4.6.1-x86_64-live-kernel-x86_64
+ append ip=dhcp rd.neednet=1 coreos.inst.install_dev=vda console=tty0 console=ttyS0 coreos.inst=yes coreos.live.rootfs_url=http://192.168.50.254:8080/openshift4/images/rhcos-4.6.1-x86_64-live-rootfs.x86_64.img coreos.inst.ignition_url=http://192.168.50.254:8080/openshift4/4.6.4/ignitions/bootstrap.ign initrd=http://192.168.50.254:8080/openshift4/images/rhcos-4.6.1-x86_64-live-initramfs.x86_64.img
